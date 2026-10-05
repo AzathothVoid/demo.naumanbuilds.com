@@ -3,28 +3,162 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Northside HVAC &amp; Plumbing (demo)</title>
-<meta name="description" content="A voice demo: an AI receptionist for a made-up plumbing company. Not live yet.">
-<style>
-  :root { --bg: #0C1A2B; --text: #E6EDF3; --muted: #8FA6C2; --amber: #FFC24B; --lime: #B6FF3B; color-scheme: dark }
-  * { box-sizing: border-box }
-  body { margin: 0; min-height: 100vh; display: grid; place-items: center; color: var(--text); padding: 40px 20px;
-         background: var(--bg) linear-gradient(rgba(127,166,214,.07) 1px, transparent 1px) 0 0 / 32px 32px;
-         font: 17px/1.6 "Segoe UI", Roboto, Helvetica, Arial, sans-serif }
-  main { max-width: 600px }
-  .badge { display: inline-block; font: 700 11px ui-monospace, Menlo, Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--bg); background: var(--amber); padding: 4px 8px }
-  h1 { font-size: clamp(28px, 6vw, 44px); line-height: 1.08; letter-spacing: -.03em; margin: 22px 0 0 }
-  p { color: #C0CEDD; margin: 16px 0 0 }
-  .by { margin-top: 28px; font: 13px ui-monospace, Menlo, Consolas, monospace; color: var(--muted) }
-  .by a { color: var(--text); text-decoration-color: var(--lime); text-underline-offset: 3px }
-</style>
+<title>AI receptionist demo · Northside HVAC &amp; Plumbing</title>
+<meta name="description" content="Talk to an AI receptionist for a made-up plumbing company, in your browser or by phone. It checks a calendar, books a visit and logs you in a CRM. A demo by Nauman.">
+<link rel="canonical" href="https://demo.naumanbuilds.com/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/schibsted-grotesk-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/demo.css">
+<meta name="theme-color" content="#0C1A2B">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://demo.naumanbuilds.com/">
+<meta property="og:title" content="Try an AI receptionist for a made-up plumbing company">
+<meta property="og:description" content="Talk to it in your browser. It checks a calendar, books a visit and logs you in a CRM.">
+<meta property="og:image" content="https://demo.naumanbuilds.com/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
-<main>
-  <span class="badge">Demo · coming soon</span>
-  <h1>Northside HVAC &amp; Plumbing (demo)</h1>
-  <p>An AI receptionist for a made-up plumbing company, which you'll be able to call or talk to in your browser. It isn't live yet.</p>
-  <p class="by">Built by Nauman · <a href="https://naumanbuilds.com">naumanbuilds.com</a></p>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <span><span class="badge">Demo</span>&nbsp; Northside HVAC &amp; Plumbing</span>
+    <span class="by">Built by Nauman · <a href="https://naumanbuilds.com">naumanbuilds.com</a></span>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <section class="hero" aria-labelledby="title">
+      <div>
+        <h1 id="title">Try an AI receptionist for a made-up plumbing company</h1>
+        <p class="sub">Northside HVAC &amp; Plumbing isn't a real company, so give it a made-up name and address. The receptionist checks a Google Calendar, books a two-hour visit, and adds you to a Google Sheet that stands in for a CRM. On the phone line, urgent calls go through to a person.</p>
+        <p class="notice">Demo line. Please use made-up details. Calls are capped per day.<span>Calls are recorded and end after 8 minutes.</span></p>
+        <p class="phone" id="phone" hidden><span class="label">Or call</span><a id="phone-link" href="#"></a></p>
+      </div>
+
+      <section class="call" id="call" data-state="offline" aria-labelledby="call-title">
+        <div class="call-head"><span id="call-title">Browser call</span><span>Northside HVAC &amp; Plumbing</span></div>
+        <div class="call-body">
+          <div class="call-state" aria-live="polite">
+            <span class="dot" aria-hidden="true"></span>
+            <strong id="call-status">Demo offline</strong>
+          </div>
+          <p class="call-detail" id="call-detail" aria-live="polite">The demo is offline right now.</p>
+          <div class="call-actions">
+            <button class="btn btn-go" id="call-start" type="button">Talk in your browser</button>
+            <button class="btn btn-end" id="call-end" type="button" hidden>Hang up</button>
+            <button class="btn btn-ghost" id="call-mute" type="button" aria-pressed="false" hidden>Mute</button>
+            <span class="timer" id="call-timer" hidden></span>
+          </div>
+          <div class="level" id="call-level" aria-hidden="true"></div>
+        </div>
+        <p class="call-foot">Needs a microphone. Headphones help, so the receptionist doesn't hear itself.</p>
+      </section>
+    </section>
+
+    <section class="sec" aria-labelledby="try-title">
+      <div class="sec-head">
+        <h2 id="try-title">Things to try</h2>
+        <p class="sec-intro">Say these however you like. The receptionist follows a written call flow, so these are the parts worth poking at.</p>
+      </div>
+      <ul class="tries">
+        <li class="try"><q>My AC stopped working. Can someone come tomorrow morning?</q><p>It checks the calendar, offers two-hour arrival windows, books the one you pick, and reads the booking back to you.</p></li>
+        <li class="try urgent"><q>I think I smell gas.</q><p>It gives a safety instruction first. On the phone line it puts you through to a person. In the browser it logs an urgent callback instead, because browser calls can't be transferred.</p></li>
+        <li class="try"><q>How much does a new water heater cost?</q><p>It won't quote prices. It tells you the technician confirms pricing on site, and offers to book a visit.</p></li>
+        <li class="try"><q>I'm in Naperville.</q><p>That's outside the service area (Chicago's North Side and nearby suburbs), so it offers to take a message instead of booking.</p></li>
+        <li class="try"><q>Are you a real person?</q><p>It tells you it's an AI receptionist on a demo line, then carries on.</p></li>
+        <li class="try"><q>Can I talk to someone?</q><p>On the phone line it offers to transfer you. In the browser it offers a callback.</p></li>
+      </ul>
+    </section>
+
+    <section class="sec" id="recording-sec" aria-labelledby="rec-title" hidden>
+      <div class="sec-head">
+        <h2 id="rec-title">A recorded test call</h2>
+        <p class="sec-intro">One of my own test calls, with made-up details, in case the line is busy or you'd rather listen first.</p>
+      </div>
+      <div class="recording">
+        <audio id="recording" controls preload="none"></audio>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="how-title">
+      <div class="sec-head">
+        <h2 id="how-title">How it works</h2>
+        <p class="sec-intro">The voice agent does the talking. Anything that reads or writes the calendar or CRM goes through n8n, which checks the input before anything is written.</p>
+      </div>
+      <div class="flow-scroll">
+        <ol class="flow" aria-label="Call flow, left to right">
+          <li><div class="node"><span class="k">1 · Caller</span><b>Phone or browser</b><ul><li>you, with made-up details</li></ul></div></li>
+          <li><div class="node"><span class="k">2 · Voice agent</span><b>Retell</b><ul><li>listens and talks</li><li>follows the call flow</li><li>calls tools when needed</li></ul></div></li>
+          <li><div class="node"><span class="k">3 · Tools</span><b>n8n webhooks</b><ul><li>check_availability</li><li>book_appointment</li><li>log_callback_request</li></ul></div></li>
+          <li><div class="node"><span class="k">4 · Calendar + CRM</span><b>Google Calendar + Sheet</b><ul><li>visits on the calendar</li><li>Contacts, Pipeline, Notes</li></ul></div></li>
+        </ol>
+      </div>
+      <p class="flow-note">The agent only offers times that the calendar just returned, and it never says a booking is confirmed unless the write succeeded.</p>
+    </section>
+
+    <section class="sec" aria-labelledby="wrong-title">
+      <div class="sec-head">
+        <h2 id="wrong-title">When things go wrong</h2>
+        <p class="sec-intro">Most of the work in a receptionist like this goes into the calls that don't go to plan.</p>
+      </div>
+      <div class="wrong">
+        <div class="wrong-row"><h3>An emergency<small>gas smell, flooding, CO alarm, sparking</small></h3><p>Safety instruction first. On the phone line it transfers you to the person on call. If nobody answers, or you're in the browser, it logs an urgent callback.</p></div>
+        <div class="wrong-row"><h3>The caller changes topic mid-emergency</h3><p>The urgent flag stays. In testing it used to get dropped when a caller moved on to something else, so the callback tool now forces it in code rather than trusting the prompt.</p></div>
+        <div class="wrong-row"><h3>The calendar or CRM doesn't answer</h3><p>It doesn't make up a time. It says it couldn't book, takes your name and number, and logs a callback.</p></div>
+        <div class="wrong-row"><h3>The slot gets taken while you're talking</h3><p>It never offers the same window twice. After two taken slots it offers a callback instead of going round in circles.</p></div>
+        <div class="wrong-row"><h3>Silence on the line</h3><p>After about six seconds it asks <q>Are you still there?</q> and, if nobody answers, says goodbye and ends the call.</p></div>
+        <div class="wrong-row"><h3>The demo's daily limit is reached</h3><p>It says the demo line has reached its limit for today and ends the call. This page shows the same.</p></div>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="crm-title">
+      <div class="sec-head">
+        <h2 id="crm-title">What lands in the CRM</h2>
+        <p class="sec-intro">The CRM is a Google Sheet with three tabs: Contacts, Pipeline and Notes. A booking, an urgent callback and a quote request look like this in the Pipeline tab.</p>
+      </div>
+      <div class="table-scroll">
+        <table class="crm">
+          <caption>Pipeline tab · example rows, made-up data</caption>
+          <thead><tr><th scope="col">created_at</th><th scope="col">name</th><th scope="col">phone</th><th scope="col">stage</th><th scope="col">urgent</th><th scope="col">issue</th><th scope="col">appointment</th></tr></thead>
+          <tbody>
+            <tr><td>2026-10-14 10:12</td><td>Dana Whitfield</td><td>(312) 555-0147</td><td class="s-booked">Booked</td><td>no</td><td>no_cooling</td><td>Wed 15 Oct, 8–10 AM</td></tr>
+            <tr><td>2026-10-14 10:31</td><td>Sam Ortega</td><td>(773) 555-0192</td><td class="s-urgent">Needs callback (URGENT)</td><td>yes</td><td>leak</td><td>–</td></tr>
+            <tr><td>2026-10-14 11:05</td><td>Priya Raman</td><td>(847) 555-0168</td><td class="s-cb">Needs callback</td><td>no</td><td>quote</td><td>–</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="who-title">
+      <div class="who">
+        <picture>
+          <source srcset="assets/img/nauman-avatar.webp" type="image/webp">
+          <img src="assets/img/nauman-avatar.jpg" width="72" height="72" alt="Photo of Nauman">
+        </picture>
+        <div>
+          <h2 id="who-title">Who built this</h2>
+          <p>I'm Nauman, a software engineer. I build and fix voice and WhatsApp agents for agencies, under their brand. My client work is private, so I built this one to show how I handle the details.</p>
+          <p><a href="https://naumanbuilds.com">naumanbuilds.com</a> · <a href="mailto:nauman@naumanbuilds.com">nauman@naumanbuilds.com</a></p>
+        </div>
+      </div>
+    </section>
+  </div>
 </main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>Northside HVAC &amp; Plumbing is a made-up company. Built by <a href="https://naumanbuilds.com">Nauman</a>.</span>
+    <span>Retell, n8n and Google are their owners' trademarks. No affiliation.</span>
+  </div>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/page.js"></script>
+<script src="assets/js/call.js"></script>
 </body>
 </html>

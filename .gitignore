@@ -1,0 +1,15 @@
+# secrets and local config
+.env
+.env.*
+*.pem
+*.key
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+# build / tooling
+node_modules/
+*.log
+# original photos (publish processed copies only; originals keep camera/editor metadata)
+personal-image*

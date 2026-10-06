@@ -185,3 +185,32 @@ p { margin: 0 }
   .flow > li:not(:last-child)::after { top: auto; bottom: -16px; right: auto; left: 22px; width: 2px; height: 12px }
   .flow > li:not(:last-child)::before { top: auto; bottom: -17px; right: auto; left: 18px; transform: rotate(135deg) }
 }
+
+/* ---------- motion ----------
+   Off for reduced-motion users. Scroll reveals only hide content once assets/js/motion.js has started (html.motion). */
+:root { --ease: cubic-bezier(.2, .7, .2, 1) }
+.btn, .try { transition: background-color .2s, border-color .2s, box-shadow .2s, color .2s }
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-head .wrap > * { animation: fade .6s var(--ease) .05s both }
+  .hero h1 { animation: rise .7s var(--ease) .12s both }
+  .hero .sub { animation: rise .7s var(--ease) .24s both }
+  .hero .notice { animation: rise .7s var(--ease) .34s both }
+  .hero .phone { animation: rise .7s var(--ease) .42s both }
+  .call { animation: rise .8s var(--ease) .45s both }
+  .badge { animation: badge-in .5s var(--ease) .1s both }
+  @keyframes rise { from { opacity: 0; transform: translateY(16px) } to { opacity: 1; transform: none } }
+  @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes badge-in { from { opacity: 0; transform: translateY(-6px) } to { opacity: 1; transform: none } }
+
+  .btn { transition: background-color .2s, box-shadow .25s var(--ease), transform .25s var(--ease) }
+  .btn-go:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 10px 24px -12px rgba(182,255,59,.55) }
+  .try { transition: border-color .2s, transform .25s var(--ease) }
+  .try:hover { transform: translateY(-2px); border-color: #2C5078 }
+
+  .motion [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .65s var(--ease) var(--d, 0s), transform .65s var(--ease) var(--d, 0s) }
+  .motion [data-reveal].in { opacity: 1; transform: none }
+  /* the pipeline arrows draw in after their step */
+  .motion .flow > li[data-reveal]::after, .motion .flow > li[data-reveal]::before { opacity: 0; transition: opacity .3s ease calc(var(--d, 0s) + .4s) }
+  .motion .flow > li[data-reveal].in::after, .motion .flow > li[data-reveal].in::before { opacity: 1 }
+}

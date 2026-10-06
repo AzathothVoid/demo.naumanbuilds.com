@@ -12,5 +12,5 @@ window.DEMO_CONFIG = {
   recording: null,
 
   // Max call length set on the agent, shown to visitors.
-  maxMinutes: 8
+  maxMinutes: 5
 };
